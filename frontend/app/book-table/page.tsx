@@ -31,7 +31,28 @@ export default function BookTablePage() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [countryCode, setCountryCode] = useState<string>("+91");
   const [specialRequests, setSpecialRequests] = useState<string>("");
+
+  const countries = [
+    { code: "+91", label: "🇮🇳 +91", placeholder: "98765 43210", length: 10, name: "India" },
+    { code: "+32", label: "🇧🇪 +32", placeholder: "470 12 34 56", length: 9, name: "Belgium" },
+    { code: "+44", label: "🇬🇧 +44", placeholder: "7911 123456", length: 10, name: "UK" },
+    { code: "+1",  label: "🇺🇸 +1",  placeholder: "555 019 2834", length: 10, name: "USA" },
+    { code: "+49", label: "🇩🇪 +49", placeholder: "170 1234567", length: 10, name: "Germany" }, // 10-11
+    { code: "+33", label: "🇫🇷 +33", placeholder: "6 12 34 56 78", length: 9, name: "France" },
+    { code: "+971",label: "🇦🇪 +971",placeholder: "50 123 4567",  length: 9, name: "UAE" },
+  ];
+
+  const currentCountry = countries.find(c => c.code === countryCode) || countries[0];
+
+  const handlePhoneChange = (val: string) => {
+    // Only allow digits
+    const digitsOnly = val.replace(/\D/g, "");
+    // Max length limitation based on country config (Germany max 11, others standard length)
+    const maxLen = countryCode === "+49" ? 11 : currentCountry.length;
+    setPhone(digitsOnly.slice(0, maxLen));
+  };
 
   // Flow states
   const [formStep, setFormStep] = useState<number>(1); // 1: Booking Details, 2: Contact Details
@@ -171,6 +192,25 @@ export default function BookTablePage() {
     e.preventDefault();
     if (!name || !email || !phone) return;
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    // Validate phone number digits length
+    const digits = phone.replace(/\D/g, "");
+    if (countryCode === "+49") {
+      if (digits.length < 10 || digits.length > 11) {
+        toast.error("German phone number must be 10 or 11 digits.");
+        return;
+      }
+    } else if (digits.length !== currentCountry.length) {
+      toast.error(`Phone number for ${currentCountry.name} must be exactly ${currentCountry.length} digits.`);
+      return;
+    }
+
     setIsSubmitting(true);
     const loadingToast = toast.loading(
       "Securing your table and sending confirmation...",
@@ -189,6 +229,7 @@ export default function BookTablePage() {
         body: JSON.stringify({
           email,
           name,
+          phone: `${countryCode} ${phone}`,
           partySize: activePartySize,
           date: getFormattedDate(date),
           day: getWeekdayName(date),
@@ -507,14 +548,30 @@ export default function BookTablePage() {
                             <Phone className="w-4 h-4 text-[#4a3a2a]/70" />
                             Phone Number
                           </label>
-                          <input
-                            type="tel"
-                            placeholder="+1 (555) 000-0000"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                            className="w-full px-5 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all placeholder:text-[#4a3a2a]/40"
-                          />
+                          <div className="flex gap-3">
+                            <select
+                              value={countryCode}
+                              onChange={(e) => {
+                                setCountryCode(e.target.value);
+                                setPhone(""); // reset on change
+                              }}
+                              className="px-4 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] outline-none focus:border-[#4a3a2a] transition-all cursor-pointer"
+                            >
+                              {countries.map((c) => (
+                                <option key={c.code} value={c.code}>
+                                  {c.label}
+                                </option>
+                              ))}
+                            </select>
+                            <input
+                              type="tel"
+                              placeholder={currentCountry.placeholder}
+                              value={phone}
+                              onChange={(e) => handlePhoneChange(e.target.value)}
+                              required
+                              className="flex-1 w-full px-5 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all placeholder:text-[#4a3a2a]/40"
+                            />
+                          </div>
                         </div>
 
                         {/* Special Requests */}
