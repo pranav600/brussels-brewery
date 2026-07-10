@@ -35,16 +35,59 @@ export default function BookTablePage() {
   const [specialRequests, setSpecialRequests] = useState<string>("");
 
   const countries = [
-    { code: "+91", label: "🇮🇳 +91", placeholder: "98765 43210", length: 10, name: "India" },
-    { code: "+32", label: "🇧🇪 +32", placeholder: "470 12 34 56", length: 9, name: "Belgium" },
-    { code: "+44", label: "🇬🇧 +44", placeholder: "7911 123456", length: 10, name: "UK" },
-    { code: "+1",  label: "🇺🇸 +1",  placeholder: "555 019 2834", length: 10, name: "USA" },
-    { code: "+49", label: "🇩🇪 +49", placeholder: "170 1234567", length: 10, name: "Germany" }, // 10-11
-    { code: "+33", label: "🇫🇷 +33", placeholder: "6 12 34 56 78", length: 9, name: "France" },
-    { code: "+971",label: "🇦🇪 +971",placeholder: "50 123 4567",  length: 9, name: "UAE" },
+    {
+      code: "+91",
+      label: "🇮🇳 +91",
+      placeholder: "98765 43210",
+      length: 10,
+      name: "India",
+    },
+    {
+      code: "+32",
+      label: "🇧🇪 +32",
+      placeholder: "470 12 34 56",
+      length: 9,
+      name: "Belgium",
+    },
+    {
+      code: "+44",
+      label: "🇬🇧 +44",
+      placeholder: "7911 123456",
+      length: 10,
+      name: "UK",
+    },
+    {
+      code: "+1",
+      label: "🇺🇸 +1",
+      placeholder: "555 019 2834",
+      length: 10,
+      name: "USA",
+    },
+    {
+      code: "+49",
+      label: "🇩🇪 +49",
+      placeholder: "170 1234567",
+      length: 10,
+      name: "Germany",
+    }, // 10-11
+    {
+      code: "+33",
+      label: "🇫🇷 +33",
+      placeholder: "6 12 34 56 78",
+      length: 9,
+      name: "France",
+    },
+    {
+      code: "+971",
+      label: "🇦🇪 +971",
+      placeholder: "50 123 4567",
+      length: 9,
+      name: "UAE",
+    },
   ];
 
-  const currentCountry = countries.find(c => c.code === countryCode) || countries[0];
+  const currentCountry =
+    countries.find((c) => c.code === countryCode) || countries[0];
 
   const handlePhoneChange = (val: string) => {
     // Only allow digits
@@ -192,6 +235,12 @@ export default function BookTablePage() {
     e.preventDefault();
     if (!name || !email || !phone) return;
 
+    // Validate name length
+    if (name.trim().length > 10) {
+      toast.error("Name must be up to 10 characters only.");
+      return;
+    }
+
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -207,7 +256,9 @@ export default function BookTablePage() {
         return;
       }
     } else if (digits.length !== currentCountry.length) {
-      toast.error(`Phone number for ${currentCountry.name} must be exactly ${currentCountry.length} digits.`);
+      toast.error(
+        `Phone number for ${currentCountry.name} must be exactly ${currentCountry.length} digits.`,
+      );
       return;
     }
 
@@ -257,12 +308,17 @@ export default function BookTablePage() {
           toast.success("Table booked! Confirmation email sent.");
         }
       } else {
-        throw new Error(data.error || "Failed to book your table. Please try again.");
+        throw new Error(
+          data.error || "Failed to book your table. Please try again.",
+        );
       }
     } catch (error: any) {
       console.error(error);
       toast.dismiss(loadingToast);
-      toast.error(error.message || "Booking service is currently offline. Please try again later.");
+      toast.error(
+        error.message ||
+          "Booking service is currently offline. Please try again later.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -520,7 +576,10 @@ export default function BookTablePage() {
                             type="text"
                             placeholder="John Doe"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            onChange={(e) =>
+                              setName(e.target.value.slice(0, 30))
+                            }
+                            maxLength={30}
                             required
                             className="w-full px-5 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all placeholder:text-[#4a3a2a]/40"
                           />
@@ -555,8 +614,7 @@ export default function BookTablePage() {
                                 setCountryCode(e.target.value);
                                 setPhone(""); // reset on change
                               }}
-                              className="px-4 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] outline-none focus:border-[#4a3a2a] transition-all cursor-pointer"
-                            >
+                              className="px-4 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] outline-none focus:border-[#4a3a2a] transition-all cursor-pointer">
                               {countries.map((c) => (
                                 <option key={c.code} value={c.code}>
                                   {c.label}
@@ -567,7 +625,9 @@ export default function BookTablePage() {
                               type="tel"
                               placeholder={currentCountry.placeholder}
                               value={phone}
-                              onChange={(e) => handlePhoneChange(e.target.value)}
+                              onChange={(e) =>
+                                handlePhoneChange(e.target.value)
+                              }
                               required
                               className="flex-1 w-full px-5 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all placeholder:text-[#4a3a2a]/40"
                             />

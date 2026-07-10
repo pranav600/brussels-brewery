@@ -3,18 +3,38 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, name, partySize, date, day, time, bookingRef, specialRequests, location } = body;
+    const {
+      email,
+      name,
+      partySize,
+      date,
+      day,
+      time,
+      bookingRef,
+      specialRequests,
+      location,
+    } = body;
 
-    if (!email || !name || !partySize || !date || !day || !time || !bookingRef || !location) {
+    if (
+      !email ||
+      !name ||
+      !partySize ||
+      !date ||
+      !day ||
+      !time ||
+      !bookingRef ||
+      !location
+    ) {
       return NextResponse.json(
         { error: "Missing required booking details" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Forward booking information to Python Django REST API backend to store in MongoDB
     try {
-      const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+      const backendUrl =
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
       const djangoResponse = await fetch(`${backendUrl}/bookings/`, {
         method: "POST",
         headers: {
@@ -35,17 +55,26 @@ export async function POST(request: Request) {
 
       if (!djangoResponse.ok) {
         const djangoError = await djangoResponse.json();
-        console.warn("[Next.js Gateway] Django DB persistence returned error:", djangoError);
+        console.warn(
+          "[Next.js Gateway] Django DB persistence returned error:",
+          djangoError,
+        );
         return NextResponse.json(
           { error: "Database error. Booking could not be completed." },
-          { status: 500 }
+          { status: 500 },
         );
       }
     } catch (dbError) {
-      console.error("[Next.js Gateway] Failed to connect to Django DB microservice:", dbError);
+      console.error(
+        "[Next.js Gateway] Failed to connect to Django DB microservice:",
+        dbError,
+      );
       return NextResponse.json(
-        { error: "Backend database service is offline. Booking could not be completed." },
-        { status: 500 }
+        {
+          error:
+            "Backend database service is offline. Booking could not be completed.",
+        },
+        { status: 500 },
       );
     }
 
@@ -84,13 +113,17 @@ export async function POST(request: Request) {
               <td style="padding: 8px 0; color: rgba(74,58,42,0.6);">Time Slot</td>
               <td style="padding: 8px 0; font-weight: bold; text-align: right;">${time}</td>
             </tr>
-            ${specialRequests ? `
+            ${
+              specialRequests
+                ? `
             <tr>
               <td style="padding: 12px 0 0 0; color: rgba(74,58,42,0.6); vertical-align: top;" colspan="2">
                 <span style="display: block; font-size: 12px; margin-bottom: 6px; font-weight: bold;">Special Requests</span>
                 <div style="font-weight: normal; font-size: 13px; background-color: #efebe4; padding: 12px; border-radius: 8px; border-left: 3px solid #4a3a2a; color: #4a3a2a; line-height: 1.5;">${specialRequests}</div>
               </td>
-            </tr>` : ""}
+            </tr>`
+                : ""
+            }
           </table>
         </div>
 
@@ -106,7 +139,9 @@ export async function POST(request: Request) {
       console.log("-------------------------------------------------------");
       console.log(`To: ${email} (${name})`);
       console.log(`Subject: Table Reservation Confirmed - ${bookingRef}`);
-      console.log(`Details: ${partySize} guests at ${location} on ${date} (${day}) at ${time}`);
+      console.log(
+        `Details: ${partySize} guests at ${location} on ${date} (${day}) at ${time}`,
+      );
       if (specialRequests) {
         console.log(`Special Request: ${specialRequests}`);
       }
@@ -118,7 +153,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         message: "Email simulated successfully (Mock Mode).",
-        bookingRef
+        bookingRef,
       });
     }
 
@@ -127,14 +162,14 @@ export async function POST(request: Request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         from: "Brussels Brewery <onboarding@resend.dev>",
         to: [email],
         subject: `Table Reservation Confirmed - ${bookingRef}`,
-        html: emailHtml
-      })
+        html: emailHtml,
+      }),
     });
 
     const resendData = await resendResponse.json();
@@ -143,7 +178,7 @@ export async function POST(request: Request) {
       console.error("Resend API Error details:", resendData);
       return NextResponse.json(
         { error: resendData.message || "Failed to send email via Resend API" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -151,14 +186,13 @@ export async function POST(request: Request) {
       success: true,
       message: "Confirmation email sent successfully via Resend API",
       id: resendData.id,
-      bookingRef
+      bookingRef,
     });
-
   } catch (error: any) {
     console.error("Email API handler failed:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
