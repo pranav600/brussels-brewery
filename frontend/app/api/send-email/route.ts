@@ -14,7 +14,8 @@ export async function POST(request: Request) {
 
     // Forward booking information to Python Django REST API backend to store in MongoDB
     try {
-      const djangoResponse = await fetch("http://localhost:8000/api/bookings/", {
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+      const djangoResponse = await fetch(`${backendUrl}/bookings/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
