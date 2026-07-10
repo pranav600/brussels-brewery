@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+frontend/node_modules/
+
+# Next.js build
+.next/
+frontend/.next/
+out/
+frontend/out/
+
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+backend/db.sqlite3
+
+# Environments and Secrets
+.env
+.env.*
+backend/.env
+frontend/.env*
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
