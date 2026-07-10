@@ -21,22 +21,42 @@ export default function HomePage() {
             {/* Left Column: Heading and CTAs */}
             <div className="lg:col-span-5 flex flex-col justify-center pr-0 lg:pr-6">
               {/* Giant stacked headline — Anton font matching reference */}
-              <motion.h1
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.75, ease: "easeOut" }}
-                className="font-display uppercase text-[#4a3a2a]"
-                style={{
-                  fontSize: "clamp(72px, 11vw, 130px)",
-                  lineHeight: 1.1,
-                  letterSpacing: "-0.01em",
-                }}>
-                Brewed
-                <br />
-                With
-                <br />
-                Care
-              </motion.h1>
+              <div className="relative">
+                <motion.h1
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.75, ease: "easeOut" }}
+                  className="font-display uppercase text-[#4a3a2a]"
+                  style={{
+                    fontSize: "clamp(72px, 11vw, 130px)",
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.01em",
+                  }}>
+                  Brewed
+                  <br />
+                  With
+                  <br />
+                  Care
+                </motion.h1>
+
+                {/* Mobile-only cups image next to "WITH" and "CARE" */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.75, delay: 0.3, ease: "easeOut" }}
+                  className="absolute right-0 bottom-0 w-[140px] h-[140px] xs:w-[170px] xs:h-[170px] sm:w-[220px] sm:h-[220px] lg:hidden select-none pointer-events-none mix-blend-multiply">
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/images/three_brussels_cups.png"
+                      alt="Three Brussels Brewery customized 3D floating iced coffee cups with dynamic splash effects"
+                      fill
+                      priority
+                      className="object-contain"
+                      sizes="(max-width: 640px) 170px, (max-width: 1024px) 220px, 220px"
+                    />
+                  </div>
+                </motion.div>
+              </div>
 
               {/* Description */}
               <motion.p
@@ -69,7 +89,7 @@ export default function HomePage() {
             </div>
 
             {/* Right Column: Coffee Image */}
-            <div className="lg:col-span-7 flex items-center justify-center relative select-none">
+            <div className="hidden lg:flex lg:col-span-7 items-center justify-center relative select-none">
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
