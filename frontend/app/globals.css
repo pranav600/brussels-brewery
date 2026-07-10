@@ -1,0 +1,38 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Anton&display=swap");
+
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+:root {
+  --color-bg: #efebe4;
+  --color-text: #4a3a2a;
+  --color-primary: #4a3a2a;
+  --color-primary-hover: #5d4936;
+  --color-outline-border: rgba(74, 58, 42, 0.4);
+  --color-outline-border-hover: rgba(74, 58, 42, 0.8);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Outfit", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom animation classes */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
