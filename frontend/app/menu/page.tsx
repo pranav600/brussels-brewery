@@ -226,7 +226,7 @@ export default function MenuPage() {
         </div>
 
         {/* Categories Tab Bar */}
-        <div className="flex items-center justify-center gap-3 mb-12 select-none">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12 select-none">
           {[
             { id: "all", label: "All Items" },
             { id: "coffee", label: "Premium Coffee" },

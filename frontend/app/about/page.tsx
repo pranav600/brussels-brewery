@@ -128,9 +128,9 @@ export default function AboutPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
             className="bg-[#3a2010] text-[#efebe4] rounded-3xl p-8 sm:p-12 mb-24 shadow-2xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {stats.map((stat, i) => (
-                <div key={i} className="pt-6 md:pt-0 first:pt-0 md:first:pt-0">
+                <div key={i} className="py-2 md:py-0">
                   <span className="font-display uppercase text-4xl sm:text-5xl text-amber-400 block mb-2">
                     {stat.value}
                   </span>
@@ -162,7 +162,7 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white/40 backdrop-blur-sm border border-[#4a3a2a]/10 p-8 rounded-2xl flex items-start gap-6 hover:bg-white/60 transition-colors">
+                  className="bg-white/40 backdrop-blur-sm border border-[#4a3a2a]/10 p-6 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-start gap-4 sm:gap-6 hover:bg-white/60 transition-colors">
                   <div className="w-12 h-12 rounded-xl bg-[#4a3a2a]/5 flex items-center justify-center shrink-0">
                     {val.icon}
                   </div>

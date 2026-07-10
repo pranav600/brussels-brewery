@@ -406,7 +406,7 @@ export default function BookTablePage() {
                             <Users className="w-4 h-4 text-[#4a3a2a]/70" />
                             How many guests?
                           </label>
-                          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                             {[1, 2, 3, 4, 5, 6].map((num) => (
                               <button
                                 key={num}

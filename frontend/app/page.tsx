@@ -16,7 +16,7 @@ export default function HomePage() {
 
       {/* Main Hero Section */}
       <main className="flex-1 flex items-center">
-        <div className="max-w-7xl mx-auto sm:px-15 py-12 lg:py-5 w-full">
+        <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-12 lg:py-5 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Column: Heading and CTAs */}
             <div className="lg:col-span-5 flex flex-col justify-center pr-0 lg:pr-6">
@@ -54,7 +54,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-                className="flex flex-row items-center gap-4 mt-10">
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-10">
                 <Link
                   href="/menu"
                   className="bg-[#7a6040] text-[#efebe4] text-center px-7 py-3.5 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-[#5d4936] transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm">

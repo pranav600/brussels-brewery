@@ -18,7 +18,7 @@ export default function Footer() {
                 <path d="M40 18C40 13 42 13 42 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
                 <path d="M16 28H48C48 28 46 45 32 45C18 45 16 28 16 28Z" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="font-sans font-medium text-lg uppercase tracking-[0.2em] text-[#4a3a2a]">
+              <span className="font-sans font-medium text-xs sm:text-base md:text-lg uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#4a3a2a]">
                 Brussels Brewery
               </span>
             </div>

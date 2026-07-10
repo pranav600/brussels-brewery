@@ -64,7 +64,7 @@ export default function Navbar() {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="font-sans font-medium text-lg uppercase tracking-[0.2em] text-[#4a3a2a]">
+          <span className="font-sans font-medium text-xs sm:text-base md:text-lg uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#4a3a2a]">
             Brussels Brewery
           </span>
         </Link>
