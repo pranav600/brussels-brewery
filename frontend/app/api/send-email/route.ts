@@ -33,15 +33,20 @@ export async function POST(request: Request) {
         }),
       });
 
-      if (djangoResponse.ok) {
-        const djangoData = await djangoResponse.json();
-        console.log("[Next.js Gateway] Successfully persisted booking in Django DB.", djangoData);
-      } else {
+      if (!djangoResponse.ok) {
         const djangoError = await djangoResponse.json();
         console.warn("[Next.js Gateway] Django DB persistence returned error:", djangoError);
+        return NextResponse.json(
+          { error: "Database error. Booking could not be completed." },
+          { status: 500 }
+        );
       }
     } catch (dbError) {
-      console.error("[Next.js Gateway] Failed to connect to Django DB microservice (will fall back to mock):", dbError);
+      console.error("[Next.js Gateway] Failed to connect to Django DB microservice:", dbError);
+      return NextResponse.json(
+        { error: "Backend database service is offline. Booking could not be completed." },
+        { status: 500 }
+      );
     }
 
     const apiKey = process.env.RESEND_API_KEY;

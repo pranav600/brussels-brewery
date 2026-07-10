@@ -216,15 +216,12 @@ export default function BookTablePage() {
           toast.success("Table booked! Confirmation email sent.");
         }
       } else {
-        throw new Error(data.error || "Failed to send email");
+        throw new Error(data.error || "Failed to book your table. Please try again.");
       }
     } catch (error: any) {
       console.error(error);
-      // Fallback: Secure booking anyway even if email fails
-      setBookingRef(refStr);
-      setIsSubmitted(true);
       toast.dismiss(loadingToast);
-      toast.error("Booking secured, but email notification failed.");
+      toast.error(error.message || "Booking service is currently offline. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
