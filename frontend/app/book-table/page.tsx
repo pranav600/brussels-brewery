@@ -469,7 +469,7 @@ export default function BookTablePage() {
                                 } catch (err) {}
                               }}
                               required
-                              className="w-full px-5 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm font-medium text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all cursor-pointer"
+                              className="w-full pl-5 pr-28 py-4 rounded-[14px] bg-[#efebe4]/30 border border-[#4a3a2a]/20 text-sm font-medium text-[#4a3a2a] focus:border-[#4a3a2a] focus:bg-transparent outline-none transition-all cursor-pointer"
                             />
                             {date && (
                               <div className="absolute right-4 top-1/2 -translate-y-1/2 bg-[#4a3a2a]/10 px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider text-[#4a3a2a]">

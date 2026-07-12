@@ -36,3 +36,10 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+
+/* Hide default calendar icon in date inputs to avoid layout overlap */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
