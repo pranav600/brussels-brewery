@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Anton&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Anton&family=Playfair+Display:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
 :root {
-  --color-bg: #efebe4;
-  --color-text: #4a3a2a;
-  --color-primary: #4a3a2a;
-  --color-primary-hover: #5d4936;
-  --color-outline-border: rgba(74, 58, 42, 0.4);
-  --color-outline-border-hover: rgba(74, 58, 42, 0.8);
+  --color-bg: #f0ebe4;
+  --color-text: #0A4A28;
+  --color-primary: #0A4A28;
+  --color-primary-hover: #07301a;
+  --color-outline-border: rgba(10, 74, 40, 0.4);
+  --color-outline-border-hover: rgba(10, 74, 40, 0.8);
 }
 
 @layer base {
@@ -41,5 +41,22 @@
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
+}
+
+/* Scrollbar hiding utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
