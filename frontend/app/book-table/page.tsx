@@ -905,3 +905,5 @@ export default function BookTablePage() {
 }
 
 // patch: wizard step animations
+
+// patch: booking reference wrapping alignment
