@@ -6,6 +6,7 @@ export async function POST(request: Request) {
     const {
       email,
       name,
+      phone,
       partySize,
       date,
       day,
@@ -18,6 +19,7 @@ export async function POST(request: Request) {
     if (
       !email ||
       !name ||
+      !phone ||
       !partySize ||
       !date ||
       !day ||
@@ -34,7 +36,8 @@ export async function POST(request: Request) {
     // Forward booking information to Python Django REST API backend to store in MongoDB
     try {
       const backendUrl =
-        process.env.NEXT_PUBLIC_API_URL || "https://brussels-brewery.onrender.com/api";
+        process.env.NEXT_PUBLIC_API_URL ||
+        "http://127.0.0.1:8000/api";
       const djangoResponse = await fetch(`${backendUrl}/bookings/`, {
         method: "POST",
         headers: {
@@ -43,6 +46,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           email,
           name,
+          phone,
           partySize,
           date,
           day,
@@ -79,7 +83,7 @@ export async function POST(request: Request) {
     }
 
     console.log("\n=======================================================");
-    console.log("[ Brussels Brewery Email Simulation ]");
+    console.log("[ Cafe Forêt Email Simulation ]");
     console.log("-------------------------------------------------------");
     console.log(`To: ${email} (${name})`);
     console.log(`Subject: Table Reservation Confirmed - ${bookingRef}`);
