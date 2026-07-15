@@ -5,20 +5,20 @@ import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: {
-    default: "BrewMaster Cafe — Premium Coffee & Food",
-    template: "%s | BrewMaster Cafe",
+    default: "Cafe Forêt — Coffee, Calm & Sweetness",
+    template: "%s | Cafe Forêt",
   },
   description:
-    "Experience the finest coffee, freshly brewed with love. Explore our premium menu, reserve a table, or order online. BrewMaster — Where Every Sip Tells a Story.",
-  keywords: ["coffee", "cafe", "restaurant", "espresso", "online order", "table reservation"],
-  authors: [{ name: "BrewMaster Cafe" }],
+    "A lush botanical forest sanctuary in downtown Toronto. Experience signature specialty croffles and pistachio cream coffees in our calm, study-friendly plant oasis. Cafe Forêt — Coffee, calm, and a little something sweet.",
+  keywords: ["coffee", "cafe", "toronto", "croffle", "pistachio cream coffee", "table reservation", "study space"],
+  authors: [{ name: "Cafe Forêt" }],
   openGraph: {
-    title: "BrewMaster Cafe",
-    description: "Premium Coffee & Food Experience",
+    title: "Cafe Forêt",
+    description: "Botanical study sanctuary and specialty cafe experience in Toronto",
     type: "website",
-    siteName: "BrewMaster Cafe",
+    siteName: "Cafe Forêt",
   },
-  twitter: { card: "summary_large_image", title: "BrewMaster Cafe" },
+  twitter: { card: "summary_large_image", title: "Cafe Forêt" },
   manifest: "/manifest.json",
 };
 
