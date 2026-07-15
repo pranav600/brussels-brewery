@@ -5,46 +5,46 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, ShieldCheck, Flame, Users2 } from "lucide-react";
+import { Leaf, Coffee, Sparkles, BookOpen } from "lucide-react";
 
 export default function AboutPage() {
   const stats = [
-    { value: "10+", label: "Years of Crafting" },
-    { value: "15k+", label: "Daily Happy Brewers" },
-    { value: "3", label: "Roastery Locations" },
-    { value: "100%", label: "Sourced with Love" },
+    { value: "50+", label: "Lush Indoor Plants" },
+    { value: "4.0★", label: "Google Rating" },
+    { value: "1", label: "Cozy Forest Oasis" },
+    { value: "100%", label: "Study & Work Friendly" },
   ];
 
   const values = [
     {
-      icon: <Flame className="w-6 h-6 text-amber-500" />,
-      title: "Art of Roasting",
+      icon: <Leaf className="w-6 h-6 text-emerald-600" />,
+      title: "Botanical Serenity",
       description:
-        "Every single bean is roasted in small batches to highlight its unique flavor profiles.",
+        "A lush, plant-filled forest oasis in downtown Toronto designed to help you relax, focus, and find calm.",
     },
     {
-      icon: <Heart className="w-6 h-6 text-rose-500" />,
-      title: "Handcrafted Love",
+      icon: <Coffee className="w-6 h-6 text-amber-700" />,
+      title: "Cream Coffee Craft",
       description:
-        "From pulling double espresso shots to pouring custom latte art, we care about the details.",
+        "Savor our signature house-made cream-topped specialty drinks, crafted with premium coffee beans.",
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-emerald-500" />,
-      title: "Ethical Sourcing",
+      icon: <Sparkles className="w-6 h-6 text-amber-500" />,
+      title: "Signature Croffles",
       description:
-        "We partner directly with family farms around the globe to ensure fair wages and premium quality.",
+        "Fresh, crispy, and warm croffles prepared daily using high-quality butter and sweet toppings.",
     },
     {
-      icon: <Users2 className="w-6 h-6 text-sky-500" />,
-      title: "Our Community",
+      icon: <BookOpen className="w-6 h-6 text-indigo-600" />,
+      title: "Workspace Comfort",
       description:
-        "Our cafes are spaces designed to inspire connection, collaboration, and slow afternoons.",
+        "Equipped with spacious tables, warm lighting, and quiet corners perfect for focused study or work.",
     },
   ];
 
   return (
     <div
-      className="min-h-screen bg-[#efebe4] text-[#4a3a2a] flex flex-col font-sans"
+      className="min-h-screen bg-[#f0ebe4] text-[#0A4A28] flex flex-col font-sans"
       suppressHydrationWarning>
       <Navbar />
 
@@ -56,14 +56,14 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="font-display uppercase text-5xl sm:text-6xl tracking-tight text-[#4a3a2a] mb-4">
+              className="font-display uppercase text-5xl sm:text-6xl tracking-tight text-[#0A4A28] mb-4">
               Our Story
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-base sm:text-lg text-[#4a3a2a]/70 font-light leading-relaxed">
+              className="text-base sm:text-lg text-[#0A4A28]/70 font-light leading-relaxed">
               Learn about our journey, our commitment to coffee craft, and the
               values that drive every brew we pour.
             </motion.p>
@@ -77,27 +77,27 @@ export default function AboutPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="lg:col-span-6 space-y-6">
-              <h2 className="font-display uppercase text-3xl sm:text-4xl text-[#4a3a2a] tracking-tight">
+              <h2 className="font-display uppercase text-3xl sm:text-4xl text-[#0A4A28] tracking-tight">
                 Born from Passion
               </h2>
-              <p className="text-sm sm:text-base text-[#4a3a2a]/80 font-light leading-relaxed">
-                Brussels Brewery started over a decade ago with a simple goal:
-                to make specialty coffee approachable, creative, and memorable.
-                Founded in the historic heart of Brussels, we set out to combine
-                traditional European coffee cultures with modern, light-roast
-                profile dynamics.
+              <p className="text-sm sm:text-base text-[#0A4A28]/80 font-light leading-relaxed">
+                Cafe Forêt started with a simple goal: to make specialty coffee,
+                pastries, and calm spaces approachable, creative, and memorable.
+                Founded as a botanical sanctuary in downtown Toronto, we set out to
+                combine traditional coffee brewing techniques with a modern, cozy
+                workspace atmosphere.
               </p>
-              <p className="text-sm sm:text-base text-[#4a3a2a]/80 font-light leading-relaxed">
-                Every cup of coffee is the result of a meticulously traced
-                journey, starting from small family-owned farms in Ethiopia,
-                Colombia, and Sumatra, to our custom-built cast iron roasters
-                right here in Brussels. We look at coffee not just as a drink,
-                but as a craft and a community.
+              <p className="text-sm sm:text-base text-[#0A4A28]/80 font-light leading-relaxed">
+                Every cup of coffee is the result of a meticulously planned
+                journey, from selecting premium coffee beans to crafting our signature
+                cream-topped drinks and buttery pastries. We look at Cafe Forêt not just
+                as a cafe, but as a botanical oasis for our community to study,
+                connect, and unwind.
               </p>
               <div className="pt-4">
                 <Link
                   href="/menu"
-                  className="bg-[#4a3a2a] text-[#efebe4] inline-block px-7 py-3.5 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-[#5d4936] transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm">
+                  className="bg-[#0A4A28] text-[#f0ebe4] inline-block px-7 py-3.5 rounded-xl text-sm font-bold tracking-widest uppercase hover:bg-[#07301a] transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer shadow-sm">
                   Explore Our Brews
                 </Link>
               </div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
               className="lg:col-span-6">
               <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/50">
                 <Image
-                  src="/images/coffee_pack_branded.png"
+                  src="/images/about_page.jpg"
                   alt="Specialty coffee packaging showing roasted coffee beans and take-out cups"
                   fill
                   className="object-cover"
@@ -127,14 +127,14 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="bg-[#3a2010] text-[#efebe4] rounded-3xl p-8 sm:p-12 mb-24 shadow-2xl">
+            className="bg-[#0A4A28] text-[#f0ebe4] rounded-3xl p-8 sm:p-12 mb-24 shadow-xl border border-[#0A4A28]/10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {stats.map((stat, i) => (
                 <div key={i} className="py-2 md:py-0">
-                  <span className="font-display uppercase text-4xl sm:text-5xl text-amber-400 block mb-2">
+                  <span className="font-display uppercase text-4xl sm:text-5xl text-white block mb-2">
                     {stat.value}
                   </span>
-                  <span className="text-xs sm:text-sm text-white/60 font-light uppercase tracking-wider">
+                  <span className="text-xs sm:text-sm text-[#f0ebe4]/80 font-light uppercase tracking-wider">
                     {stat.label}
                   </span>
                 </div>
@@ -145,12 +145,12 @@ export default function AboutPage() {
           {/* Section 3: Core Values */}
           <div>
             <div className="text-center mb-16 max-w-xl mx-auto">
-              <h2 className="font-display uppercase text-3xl sm:text-4xl text-[#4a3a2a] tracking-tight mb-4">
+              <h2 className="font-display uppercase text-3xl sm:text-4xl text-[#0A4A28] tracking-tight mb-4">
                 What We Stand For
               </h2>
-              <p className="text-sm sm:text-base text-[#4a3a2a]/70 font-light">
-                We believe that premium coffee should be made responsibly and
-                served with transparency.
+              <p className="text-sm sm:text-base text-[#0A4A28]/70 font-light">
+                We believe that specialty coffee, botanical greenery, and quiet comfort
+                should come together to create a calm sanctuary for everyone.
               </p>
             </div>
 
@@ -162,15 +162,15 @@ export default function AboutPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white/40 backdrop-blur-sm border border-[#4a3a2a]/10 p-6 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-start gap-4 sm:gap-6 hover:bg-white/60 transition-colors">
-                  <div className="w-12 h-12 rounded-xl bg-[#4a3a2a]/5 flex items-center justify-center shrink-0">
+                  className="bg-white/40 backdrop-blur-sm border border-[#0A4A28]/10 p-6 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-start gap-4 sm:gap-6 hover:bg-white/60 transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-[#0A4A28]/5 flex items-center justify-center shrink-0">
                     {val.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-base uppercase tracking-wider text-[#4a3a2a] mb-2">
+                    <h3 className="font-semibold text-base uppercase tracking-wider text-[#0A4A28] mb-2">
                       {val.title}
                     </h3>
-                    <p className="text-sm text-[#4a3a2a]/70 font-light leading-relaxed">
+                    <p className="text-sm text-[#0A4A28]/70 font-light leading-relaxed">
                       {val.description}
                     </p>
                   </div>
