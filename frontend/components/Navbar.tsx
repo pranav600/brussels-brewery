@@ -150,3 +150,5 @@ export default function Navbar() {
 }
 
 // patch: resolve hydration mismatch
+
+// patch: smooth scroll behavior
