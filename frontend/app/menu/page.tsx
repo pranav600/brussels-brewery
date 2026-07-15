@@ -633,3 +633,5 @@ export default function MenuPage() {
     </div>
   );
 }
+
+// patch: alternating desktop layout with square cover images
