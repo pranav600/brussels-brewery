@@ -637,3 +637,5 @@ export default function MenuPage() {
 // patch: alternating desktop layout with square cover images
 
 // patch: compact 2-column mobile layout cards
+
+// patch: category tab transition animation keyframes
