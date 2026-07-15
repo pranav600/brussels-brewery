@@ -10,7 +10,7 @@ def create_booking(request):
         data = request.data
         
         # Check required fields
-        required_fields = ['email', 'name', 'partySize', 'date', 'day', 'time', 'bookingRef', 'location']
+        required_fields = ['email', 'name', 'phone', 'partySize', 'date', 'day', 'time', 'bookingRef', 'location']
         missing_fields = [f for f in required_fields if f not in data]
         if missing_fields:
             return Response(
@@ -24,6 +24,7 @@ def create_booking(request):
             "location": data['location'],
             "name": data['name'],
             "email": data['email'],
+            "phone": data['phone'],
             "party_size": data['partySize'],
             "date": data['date'],
             "day": data['day'],
