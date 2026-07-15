@@ -2,314 +2,634 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+// Category structure mapping
+const CATEGORIES = [
+  { id: "all", label: "Full Menu" },
+  { id: "croffle", label: "Croffle" },
+  { id: "bingsu", label: "Bingsu" },
+  { id: "coffee", label: "Coffee & Latte" },
+  { id: "matcha", label: "Matcha Series" },
+  { id: "tea", label: "Tea & Chocolate" },
+  { id: "sparkling-smoothie", label: "Refreshers & Smoothies" },
+];
+
 interface MenuItem {
-  id: string;
   name: string;
-  price: number;
-  description: string;
-  category: "coffee" | "snacks";
+  price: string;
+  description?: string;
   tags?: string[];
-  icon: React.ReactNode;
 }
 
+interface MenuSection {
+  title: string;
+  subtitle?: string;
+  category: string;
+  items: MenuItem[];
+  note?: string;
+  image?: string;
+}
+
+const menuSections: MenuSection[] = [
+  // ── CROFFLE (CROISSANT WAFFLE) ──
+  {
+    title: "Croffle",
+    subtitle: "Croissant Waffle",
+    category: "croffle",
+    image: "/images/croffle.jpg",
+    note: "EXTRA: Add Ice Cream +$3.00 | Fruit Toppings (Banana, Mango) +$2.00",
+    items: [
+      {
+        name: "Vanilla",
+        price: "11.95",
+        description:
+          "Croffle, Vanilla ice cream, Maple syrup, Whipped Cream, Almond topping.",
+      },
+      {
+        name: "Chocolate",
+        price: "12.95",
+        description:
+          "Croffle, Chocolate ice cream, Banana, Whipped Cream, Almond topping.",
+      },
+      {
+        name: "Berry",
+        price: "12.95",
+        description:
+          "Croffle, Vanilla ice cream, Strawberry, Blueberry, Whipped Cream.",
+      },
+      {
+        name: "Injeolmi (Roasted Soybean)",
+        price: "12.95",
+        description:
+          "Croffle, condensed milk, Roasted injeolmi powder, sliced almond, Vanilla ice cream, Whipped Cream.",
+      },
+      {
+        name: "Brown Cheese",
+        price: "13.95",
+        description:
+          "Croffle, Cheese, Vanilla ice cream, Whipped cream, Caramel syrup.",
+      },
+    ],
+  },
+
+  // ── BINGSU (KOREAN SHAVED ICE) ──
+  {
+    title: "Bingsu",
+    subtitle: "Korean Milk Shaved Ice",
+    category: "bingsu",
+    image: "/images/mango_bingsu.jpg",
+    items: [
+      {
+        name: "Milk Redbean",
+        price: "14.95",
+        description: "Redbean, Vanilla ice cream, Condensed milk.",
+      },
+      {
+        name: "Injeolmi (Roasted Soybean)",
+        price: "14.95",
+        description:
+          "Injeolmi, roasted soy powder, redbean, Vanilla ice cream, Condensed milk, Almond.",
+      },
+      {
+        name: "Strawberry",
+        price: "15.95",
+        description: "Strawberry, strawberry puree, Vanilla ice cream, Mint.",
+      },
+      {
+        name: "Oreo",
+        price: "15.95",
+        description: "Oreo crumbles, Strawberry puree, Vanilla ice cream.",
+        tags: ["New"],
+      },
+      {
+        name: "Matcha Redbean",
+        price: "15.95",
+        description:
+          "Matcha powder, redbean, Vanilla ice cream, Condensed milk.",
+      },
+      {
+        name: "Mango",
+        price: "16.95",
+        description: "Mango chunks, mango puree, Vanilla ice cream.",
+      },
+    ],
+  },
+
+  // ── COFFEE ──
+  {
+    title: "Standard Coffee",
+    category: "coffee",
+    image: "/images/four_cups.jpg",
+    note: "MILK OPTIONS: Almond / Oat milk +$1.00 | Add Espresso Shot +$1.20 | Add Syrup +$0.50",
+    items: [
+      { name: "Flat White (12oz)", price: "5.95" },
+      {
+        name: "Latte (12oz / 16oz)",
+        price: "5.95 / 6.45",
+        tags: ["Hot / Ice"],
+      },
+      {
+        name: "Mocha Latte (12oz / 16oz)",
+        price: "6.45 / 7.25",
+        tags: ["Hot / Ice"],
+      },
+      {
+        name: "Vanilla Latte (12oz / 16oz)",
+        price: "6.45 / 7.25",
+        tags: ["Hot / Ice"],
+      },
+      {
+        name: "Salted Caramel Latte (12oz / 16oz)",
+        price: "6.45 / 7.25",
+        tags: ["Hot / Ice"],
+      },
+    ],
+  },
+  {
+    title: "Lattes with Cream Foam",
+    subtitle: "Coffee Base",
+    category: "coffee",
+    items: [
+      {
+        name: "Spanish Cream Latte (16oz)",
+        price: "6.75",
+        description: "Condensed milk cream foam.",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Peanut Butter Cream Latte (16oz)",
+        price: "6.75",
+        tags: ["Ice Only"],
+      },
+    ],
+  },
+  {
+    title: "Specials",
+    category: "coffee",
+    items: [
+      {
+        name: "Cookie Butter Latte (12oz / 16oz)",
+        price: "6.45 / 7.25",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Iced Coconut Coffee (16oz)",
+        price: "7.25",
+        tags: ["Ice Only"],
+      },
+    ],
+  },
+
+  // ── MATCHA ──
+  {
+    title: "Matcha Series",
+    subtitle: "Ceremonial Grade",
+    category: "matcha",
+    image: "/images/gallery_4.jpg",
+    items: [
+      {
+        name: "Matcha Latte (12oz / 16oz)",
+        price: "6.50 / 7.25",
+        tags: ["Hot / Ice"],
+      },
+      {
+        name: "Hojicha Latte (12oz / 16oz)",
+        price: "6.50 / 7.25",
+        tags: ["Hot / Ice"],
+      },
+      {
+        name: "Matcha Lime Fizz (16oz)",
+        price: "7.25",
+        tags: ["New", "Ice Only"],
+      },
+    ],
+  },
+  {
+    title: "Coconut Water with Cream Foam",
+    category: "matcha",
+    items: [
+      {
+        name: "Coconut Matcha Cloud (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Coconut Hojicha Cloud (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Strawberry Coconut Matcha Cloud (16oz)",
+        price: "6.95",
+        tags: ["New", "Ice Only"],
+      },
+    ],
+  },
+  {
+    title: "Lattes with Cream Foam",
+    subtitle: "Matcha Base",
+    category: "matcha",
+    items: [
+      { name: "Matcha Cream Latte (16oz)", price: "6.75", tags: ["Ice Only"] },
+      {
+        name: "Hojicha Cream Latte (16oz)",
+        price: "6.95",
+        description: "Matcha Cream Foam on Hojicha Latte.",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Mugwort Cream Matcha Latte (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      { name: "Ube Matcha Latte (16oz)", price: "6.95", tags: ["Ice Only"] },
+      {
+        name: "Strawberry Matcha Latte (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Strawberry Hojicha Latte (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      {
+        name: "Blueberry Matcha Latte (16oz)",
+        price: "6.95",
+        tags: ["Ice Only"],
+      },
+      { name: "Mango Matcha Latte (16oz)", price: "6.95", tags: ["Ice Only"] },
+    ],
+  },
+
+  // ── TEA & CHOCOLATE ──
+  {
+    title: "Tea & Decadent Chocolate",
+    category: "tea",
+    image: "/images/tea_chocolate.jpg",
+    items: [
+      {
+        name: "London Fog (12oz / 16oz)",
+        price: "5.50 / 6.25",
+        tags: ["Hot Only"],
+      },
+      { name: "Hot / Iced Chocolate (12oz / 16oz)", price: "5.75 / 6.75" },
+      {
+        name: "Iced Dubai Chocolate (16oz)",
+        price: "8.75",
+        description:
+          "Pistachio cream, chocolate sauce, toasted crispy kunafa layers.",
+        tags: ["Must Try", "Ice Only"],
+      },
+    ],
+  },
+  {
+    title: "Hot Tea",
+    subtitle: "by Sloane",
+    category: "tea",
+    items: [
+      {
+        name: "Heavenly Cream (12oz)",
+        price: "4.95",
+        description: "Sloane's signature blend, smooth, creamy vanilla.",
+      },
+      {
+        name: "Citron Calm (12oz)",
+        price: "4.95",
+        description: "Chamomile.",
+      },
+      { name: "Earl Grey Tea (12oz)", price: "4.95" },
+      {
+        name: "Crimson Berry (12oz)",
+        price: "4.95",
+        description: "Blend of berries and hibiscus.",
+      },
+      { name: "Decaf Black Tea (12oz)", price: "4.95" },
+    ],
+  },
+  {
+    title: "Iced Tea",
+    category: "tea",
+    items: [
+      { name: "Yuzu Berry Iced Tea (16oz)", price: "5.95" },
+      { name: "Decaf Mango Black Iced Tea (16oz)", price: "5.95" },
+      { name: "Peach Iced Tea (16oz)", price: "5.95" },
+    ],
+  },
+
+  // ── REFRESHERS & SMOOTHIES ──
+  {
+    title: "Sparkling Refresher",
+    subtitle: "Seasonal Ade",
+    category: "sparkling-smoothie",
+    image: "/images/refreshers.jpg",
+    items: [
+      {
+        name: "Mango Tango Crush (16oz)",
+        price: "7.50",
+        tags: ["New", "Seasonal", "Ice Only"],
+      },
+      {
+        name: "Berry Breeze Ade (16oz)",
+        price: "7.50",
+        tags: ["New", "Seasonal", "Ice Only"],
+      },
+      {
+        name: "Yuzu Hibiscus (16oz)",
+        price: "7.50",
+        tags: ["New", "Seasonal", "Ice Only"],
+      },
+    ],
+  },
+  {
+    title: "Smoothies",
+    category: "sparkling-smoothie",
+    items: [
+      { name: "Strawberry Smoothie (16oz)", price: "6.95", tags: ["New"] },
+      {
+        name: "Strawberry Banana Smoothie (16oz)",
+        price: "6.95",
+        tags: ["New"],
+      },
+      { name: "Mango Smoothie (16oz)", price: "6.95", tags: ["New"] },
+    ],
+  },
+];
+
 export default function MenuPage() {
-  const [activeCategory, setActiveCategory] = useState<"all" | "coffee" | "snacks">("all");
+  const [activeCategory, setActiveCategory] = useState("all");
 
-  const menuItems: MenuItem[] = [
-    // Coffee Items
-    {
-      id: "espresso",
-      name: "Espresso",
-      price: 3.00,
-      description: "Rich, bold, and concentrated double shot of pure roasted coffee.",
-      category: "coffee",
-      tags: ["Strong", "Gluten-Free"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-          <line x1="6" y1="2" x2="6" y2="4" strokeLinecap="round" />
-          <line x1="10" y1="2" x2="10" y2="4" strokeLinecap="round" />
-          <line x1="14" y1="2" x2="14" y2="4" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      id: "cappuccino",
-      name: "Cappuccino",
-      price: 4.20,
-      description: "Perfect harmony of espresso, velvet-steamed milk, and dense foam layers.",
-      category: "coffee",
-      tags: ["Classic"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-          <path d="M3 8c2.5 0 2.5 2 5 2s2.5-2 5-2 2.5 2 4 2" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      id: "latte",
-      name: "Cafe Latte",
-      price: 4.50,
-      description: "Balanced shot of espresso topped with silky steamed milk and subtle microfoam.",
-      category: "coffee",
-      tags: ["Smooth"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M5 2h14v2H5V2z" strokeLinecap="round" />
-          <path d="M6 4h12l-2 15a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3L6 4z" />
-          <line x1="9" y1="8" x2="15" y2="8" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      id: "flatwhite",
-      name: "Flat White",
-      price: 4.40,
-      description: "Smooth ristretto espresso shots topped with silky micro-foamed whole milk.",
-      category: "coffee",
-      tags: ["Double Shot"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-          <circle cx="10" cy="14" r="2" />
-        </svg>
-      )
-    },
-    {
-      id: "coldbrew",
-      name: "Cold Brew",
-      price: 4.80,
-      description: "Signature 18-hour slow-steeped iced coffee, sweet and exceptionally smooth.",
-      category: "coffee",
-      tags: ["Iced", "Sweet Finish"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M6 3h12l-1 18H7L6 3z" />
-          <line x1="8" y1="7" x2="16" y2="7" />
-          <line x1="12" y1="3" x2="12" y2="21" strokeDasharray="3 3" />
-        </svg>
-      )
-    },
-    {
-      id: "brusselsspecial",
-      name: "Brussels Signature",
-      price: 5.20,
-      description: "Premium brewed coffee infused with warm speculoos cookie butter syrup and fresh whip.",
-      category: "coffee",
-      tags: ["Chef's Choice", "Sweet"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-          <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" />
-          <path d="M7 12l2.5 2.5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      )
-    },
-    // Snack Items
-    {
-      id: "croissant",
-      name: "Butter Croissant",
-      price: 3.50,
-      description: "Flaky, golden, and rich layers of laminated butter dough, baked fresh daily.",
-      category: "snacks",
-      tags: ["Freshly Baked"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 2C8 6.5 4 8 2 12c4 2 6 0 10-3 4 3 6 5 10 3-2-4-6-5.5-10-10z" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M6 9c2-1 4-1.5 6-1.5s4 .5 6 1.5" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      id: "tart",
-      name: "Warm Berry Tart",
-      price: 4.80,
-      description: "Crisp vanilla pastry shell filled with rich custard and fresh local seasonal berries.",
-      category: "snacks",
-      tags: ["Fruit Lover"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <ellipse cx="12" cy="12" rx="10" ry="8" />
-          <circle cx="9" cy="10" r="1.5" />
-          <circle cx="12" cy="11" r="1.5" />
-          <circle cx="15" cy="10" r="1.5" />
-          <circle cx="10" cy="14" r="1.5" />
-          <circle cx="14" cy="14" r="1.5" />
-        </svg>
-      )
-    },
-    {
-      id: "brownie",
-      name: "Fudge Brownie",
-      price: 4.00,
-      description: "Decadent warm Belgian double chocolate fudge square brownie with sea salt flakes.",
-      category: "snacks",
-      tags: ["Chocolate", "Warm"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-          <line x1="3" y1="9" x2="21" y2="9" />
-          <line x1="3" y1="15" x2="21" y2="15" />
-          <line x1="9" y1="3" x2="9" y2="21" />
-          <line x1="15" y1="3" x2="15" y2="21" />
-        </svg>
-      )
-    },
-    {
-      id: "toast",
-      name: "Avocado Sourdough Toast",
-      price: 7.50,
-      description: "Fresh crushed Hass avocados, cherry tomatoes, and microgreens on toasted country sourdough.",
-      category: "snacks",
-      tags: ["Vegan", "Healthy Choice"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V6z" />
-          <circle cx="12" cy="11" r="3" />
-          <path d="M9 16c1.5 1 4.5 1 6 0" strokeLinecap="round" />
-        </svg>
-      )
-    },
-    {
-      id: "cinnamon",
-      name: "Cinnamon Glaze Roll",
-      price: 4.20,
-      description: "Soft warm brioche rolled with cinnamon brown sugar, covered in velvet cream cheese frosting.",
-      category: "snacks",
-      tags: ["Sweet", "Warm"],
-      icon: (
-        <svg className="w-8 h-8 text-[#4a3a2a]/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 12c-2 0-3-1.5-3-3s1.5-3 3-3 3 1.5 3 3-1 3-3 3zm0 0c0 2 1.5 3 3 3s3-1.5 3-3" strokeLinecap="round" />
-        </svg>
-      )
+  const filteredSections =
+    activeCategory === "all"
+      ? menuSections
+      : menuSections.filter((sec) => sec.category === activeCategory);
+
+  const getSectionStyles = (catId: string) => {
+    switch (catId) {
+      case "croffle":
+        return {
+          bg: "bg-amber-50/20 border-amber-200/50",
+          titleColor: "text-amber-900",
+          pillBg: "bg-amber-100/60 text-amber-900 border-amber-200",
+          tagColor: "bg-amber-600 text-white",
+        };
+      case "bingsu":
+        return {
+          bg: "bg-sky-50/20 border-sky-200/50",
+          titleColor: "text-sky-900",
+          pillBg: "bg-sky-100/60 text-sky-900 border-sky-200",
+          tagColor: "bg-sky-600 text-white",
+        };
+      case "coffee":
+        return {
+          bg: "bg-orange-50/20 border-orange-200/50",
+          titleColor: "text-orange-950",
+          pillBg: "bg-orange-100/60 text-orange-900 border-orange-200",
+          tagColor: "bg-orange-700 text-white",
+        };
+      case "matcha":
+        return {
+          bg: "bg-emerald-50/20 border-emerald-200/50",
+          titleColor: "text-emerald-950",
+          pillBg: "bg-emerald-100/60 text-emerald-900 border-emerald-200",
+          tagColor: "bg-emerald-700 text-white",
+        };
+      case "tea":
+        return {
+          bg: "bg-rose-50/20 border-rose-200/50",
+          titleColor: "text-rose-950",
+          pillBg: "bg-rose-100/60 text-rose-900 border-rose-200",
+          tagColor: "bg-rose-700 text-white",
+        };
+      case "sparkling-smoothie":
+        return {
+          bg: "bg-teal-50/20 border-teal-200/50",
+          titleColor: "text-teal-950",
+          pillBg: "bg-teal-100/60 text-teal-900 border-teal-200",
+          tagColor: "bg-teal-700 text-white",
+        };
+      default:
+        return {
+          bg: "bg-stone-50/30 border-stone-200/50",
+          titleColor: "text-[#0A4A28]",
+          pillBg: "bg-stone-100 text-stone-800",
+          tagColor: "bg-[#0A4A28] text-white",
+        };
     }
-  ];
-
-  const filteredItems = menuItems.filter(
-    (item) => activeCategory === "all" || item.category === activeCategory
-  );
+  };
 
   return (
-    <div className="min-h-screen bg-[#efebe4] text-[#4a3a2a] selection:bg-[#4a3a2a]/10 overflow-x-hidden relative flex flex-col justify-between">
-      
+    <div className="min-h-screen bg-[#f0ebe4] text-[#0A4A28] selection:bg-[#0A4A28]/10 overflow-x-hidden flex flex-col justify-between">
       <Navbar />
 
-      {/* Menu Main Content Container */}
-      <main className="flex-grow max-w-7xl mx-auto px-6 sm:px-10 py-12 w-full">
-        
-        {/* Breadcrumb / Back button */}
+      <motion.main
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="flex-grow max-w-7xl mx-auto px-4 sm:px-10 py-12 w-full"
+      >
+        {/* Breadcrumb */}
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#4a3a2a]/70 hover:text-[#4a3a2a] transition-colors">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm text-[#0A4A28]/70 hover:text-[#0A4A28] transition-colors">
             <ChevronLeft className="w-4 h-4" />
             Back to Home
           </Link>
         </div>
 
-        {/* Title Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h1 className="font-sans font-light text-[36px] sm:text-[48px] text-[#4a3a2a] leading-tight tracking-tight mb-4">
-            Our Menu
+        {/* Title */}
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h1 className="font-sans font-light text-[38px] sm:text-[50px] text-[#0A4A28] leading-tight tracking-tight mb-4 uppercase">
+            Mênu
           </h1>
-          <p className="text-sm sm:text-base font-light text-[#4a3a2a]/70">
-            Explore our curated selection of organic, single-origin coffees brewed to perfection, along with our freshly baked, delicious morning snacks.
+          <p className="text-sm sm:text-base font-light text-[#0A4A28]/70 italic">
+            Coffee, calm, and a little something sweet.
           </p>
         </div>
 
-        {/* Categories Tab Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-12 select-none">
-          {[
-            { id: "all", label: "All Items" },
-            { id: "coffee", label: "Premium Coffee" },
-            { id: "snacks", label: "Fresh Snacks" }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveCategory(tab.id as any)}
-              className={`px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
-                activeCategory === tab.id
-                  ? "bg-[#4a3a2a] text-[#efebe4] shadow-md"
-                  : "border border-[#4a3a2a]/15 text-[#4a3a2a] hover:bg-[#4a3a2a]/5"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Categories Bar */}
+        <div className="flex items-center gap-2 mb-16 overflow-x-auto pb-3 pt-1 scrollbar-none">
+          {CATEGORIES.map((tab) => {
+            const isSelected = activeCategory === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveCategory(tab.id)}
+                className={`shrink-0 px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all border cursor-pointer ${
+                  isSelected
+                    ? "bg-[#0A4A28] text-[#f0ebe4] border-[#0A4A28] shadow-sm"
+                    : "bg-white/40 border-[#0A4A28]/10 text-[#0A4A28]/80 hover:bg-[#0A4A28]/5"
+                }`}>
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Menu Grid Items Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="popLayout">
-            {filteredItems.map((item) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                key={item.id}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-[#4a3a2a]/5 hover:shadow-md transition-shadow flex flex-col justify-between relative group"
-              >
-                {/* Visual Header */}
-                <div>
-                  <div className="flex items-start justify-between mb-4">
-                    {/* Icon container */}
-                    <div className="w-14 h-14 rounded-xl bg-[#efebe4]/40 border border-[#4a3a2a]/10 flex items-center justify-center transition-transform group-hover:scale-105 duration-300">
-                      {item.icon}
+        {/* Menu Grid / Sections */}
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="space-y-16"
+        >
+          {filteredSections.map((section, secIdx) => {
+            const style = getSectionStyles(section.category);
+            return (
+              <div key={secIdx} className="space-y-6">
+                {/* Header of Section */}
+                <div className="border-b border-[#0A4A28]/10 pb-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+                  <div className="flex items-baseline gap-3">
+                    <h2
+                      className={`font-sans font-semibold text-2xl tracking-wide uppercase ${style.titleColor}`}>
+                      {section.title}
+                    </h2>
+                    {section.subtitle && (
+                      <span className="text-xs uppercase tracking-wider text-[#0A4A28]/50 italic">
+                        {section.subtitle}
+                      </span>
+                    )}
+                  </div>
+
+                  {section.note && (
+                    <span className="text-[10px] sm:text-xs font-medium text-[#0A4A28]/60 bg-white/50 border border-[#0A4A28]/10 px-2.5 py-1 rounded-lg max-w-full inline-block sm:inline">
+                      {section.note}
+                    </span>
+                  )}
+                </div>
+
+                {section.image ? (
+                  /* Alternating Left/Right Image layout on desktop, stacked on mobile */
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    {/* Category Image (4/4 square ratio) */}
+                    <div className={`relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm border border-[#0A4A28]/10 bg-[#0A4A28]/5 lg:col-span-5 ${secIdx % 2 === 0 ? 'lg:order-first' : 'lg:order-last'}`}>
+                      <Image
+                        src={section.image}
+                        alt={section.title}
+                        fill
+                        className="object-cover hover:scale-[1.02] transition-transform duration-700"
+                        sizes="(max-width: 1024px) 100vw, 500px"
+                        priority={secIdx === 0}
+                      />
                     </div>
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-1 justify-end max-w-[150px]">
-                      {item.tags?.map((tag) => (
-                        <span 
-                          key={tag} 
-                          className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                            tag === "Chef's Choice" 
-                              ? "bg-[#4a3a2a] text-[#efebe4]" 
-                              : "bg-[#efebe4]/60 text-[#4a3a2a]/80"
-                          }`}
+
+                    {/* Cards Container next to Image */}
+                    <div className="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-4 w-full">
+                      {section.items.map((item, itemIdx) => (
+                        <div
+                          key={itemIdx}
+                          className={`rounded-xl p-3 sm:p-4 md:p-6 border shadow-sm bg-white/70 hover:shadow-md transition-shadow flex flex-col justify-between relative overflow-hidden ${style.bg}`}
                         >
-                          {tag}
-                        </span>
+                          <div>
+                            {/* Tags (aligned across cards on desktop) */}
+                            <div className={`flex-wrap gap-1 mb-2 h-auto md:h-5 items-center ${item.tags && item.tags.length > 0 ? "flex" : "hidden md:flex"}`}>
+                              {item.tags?.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full ${style.tagColor}`}
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Name */}
+                            <h3 className="font-sans font-medium text-xs sm:text-sm md:text-lg text-[#0A4A28] mb-1 leading-tight sm:leading-snug">
+                              {item.name}
+                            </h3>
+
+                            {/* Description */}
+                            {item.description && (
+                              <p className="text-[10px] sm:text-xs font-light text-[#0A4A28]/70 leading-normal mb-3 line-clamp-2 md:line-clamp-none">
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* Price row */}
+                          <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#0A4A28]/5">
+                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#0A4A28]/40">
+                              Price
+                            </span>
+                            <span className="font-sans font-bold text-xs sm:text-sm md:text-base text-[#0A4A28]">
+                              ${item.price}
+                            </span>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
+                ) : (
+                  /* Regular grid if no category image */
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+                    {section.items.map((item, itemIdx) => (
+                      <div
+                        key={itemIdx}
+                        className={`rounded-xl p-3 sm:p-4 md:p-6 border shadow-sm bg-white/70 hover:shadow-md transition-shadow flex flex-col justify-between relative overflow-hidden ${style.bg}`}
+                      >
+                        <div>
+                          {/* Tags (aligned across cards on desktop) */}
+                          <div className={`flex-wrap gap-1 mb-2 h-auto md:h-5 items-center ${item.tags && item.tags.length > 0 ? "flex" : "hidden md:flex"}`}>
+                            {item.tags?.map((tag) => (
+                              <span
+                                key={tag}
+                                className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full ${style.tagColor}`}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
 
-                  {/* Title & Desc */}
-                  <h3 className="font-sans font-semibold text-lg text-[#4a3a2a] mb-2 group-hover:text-[#5d4936] transition-colors">
-                    {item.name}
-                  </h3>
-                  <p className="text-xs font-light text-[#4a3a2a]/70 leading-relaxed mb-6">
-                    {item.description}
-                  </p>
-                </div>
+                          {/* Name */}
+                          <h3 className="font-sans font-medium text-xs sm:text-sm md:text-lg text-[#0A4A28] mb-1 leading-tight sm:leading-snug">
+                            {item.name}
+                          </h3>
 
-                {/* Bottom Row price */}
-                <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#4a3a2a]/5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#4a3a2a]/50">
-                    Price
-                  </span>
-                  <span className="font-sans font-bold text-lg text-[#4a3a2a]">
-                    €{item.price.toFixed(2)}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                          {/* Description */}
+                          {item.description && (
+                            <p className="text-[10px] sm:text-xs font-light text-[#0A4A28]/70 leading-normal mb-3 line-clamp-2 md:line-clamp-none">
+                              {item.description}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Price row */}
+                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#0A4A28]/5">
+                          <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#0A4A28]/40">
+                            Price
+                          </span>
+                          <span className="font-sans font-bold text-xs sm:text-sm md:text-base text-[#0A4A28]">
+                            ${item.price}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </motion.div>
+
+        {/* Global Allergies / Options Note */}
+        <div className="mt-16 bg-white/40 border border-[#0A4A28]/10 rounded-2xl p-6 text-center max-w-xl mx-auto">
+          <p className="text-xs font-light text-[#0A4A28]/80 leading-relaxed space-y-1">
+            <span>
+              Bar baked goods may have come into contact with allergens. Please
+              let us know of any severe food allergies before ordering.
+            </span>
+          </p>
         </div>
-
-      </main>
+      </motion.main>
 
       <Footer />
-
     </div>
   );
 }
