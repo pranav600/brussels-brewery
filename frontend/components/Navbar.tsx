@@ -148,3 +148,5 @@ export default function Navbar() {
     </header>
   );
 }
+
+// patch: resolve hydration mismatch
