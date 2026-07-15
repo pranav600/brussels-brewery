@@ -903,3 +903,5 @@ export default function BookTablePage() {
     </div>
   );
 }
+
+// patch: wizard step animations
