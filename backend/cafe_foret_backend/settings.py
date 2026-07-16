@@ -32,7 +32,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'cafe_backend.urls'
+ROOT_URLCONF = 'cafe_foret_backend.urls'
 
 TEMPLATES = [
     {
@@ -50,7 +50,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cafe_backend.wsgi.application'
+WSGI_APPLICATION = 'cafe_foret_backend.wsgi.application'
 
 DATABASES = {
     'default': {

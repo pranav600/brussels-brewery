@@ -6,7 +6,7 @@ from pymongo.errors import ConnectionFailure
 # Load environment variables from .env file
 load_dotenv()
 # Read connection URI from env or use default localhost
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+MONGO_URI = os.getenv("MONGO_URI")
 
 db = None
 bookings_collection = None
@@ -15,11 +15,11 @@ try:
     client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
     # Trigger a connection check
     client.admin.command('ping')
-    db = client["cafe_bookings"]
+    db = client["cafe_foret_db"]
     bookings_collection = db["bookings"]
     print("====================================================")
     print("MongoDB Connection Successful!")
-    print(f"Database: 'cafe_bookings', Collection: 'bookings'")
+    print(f"Database: 'cafe_foret_db', Collection: 'bookings'")
     print("====================================================")
 except (ConnectionFailure, Exception) as e:
     print("====================================================")
