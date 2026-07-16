@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     try {
       const backendUrl =
         process.env.NEXT_PUBLIC_API_URL ||
-        "http://127.0.0.1:8000/api";
+        "https://cafe-foret.onrender.com/api";
       const djangoResponse = await fetch(`${backendUrl}/bookings/`, {
         method: "POST",
         headers: {
